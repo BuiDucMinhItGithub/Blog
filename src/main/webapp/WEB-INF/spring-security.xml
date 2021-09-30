@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xsi:schemaLocation="http://www.springframework.org/schema/security
+      http://www.springframework.org/schema/security/spring-security-4.0.xsd
+      http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+     
+    <http use-expressions="true">
+        <csrf disabled="true"/>
+         
+        <intercept-url pattern="/" access="permitAll()" />
+        <intercept-url pattern="/login" access="permitAll()" />
+        <intercept-url pattern="/logout" access="ROLE_ADMIN" />
+        
+        <intercept-url pattern="/admin/view" access="hasAnyRole('ADMIN', 'SUPERVISOR')" />
+        <intercept-url pattern="/admin/add" access="hasRole('ROLE_SUPERVISOR')" />
+        <intercept-url pattern="/admin/edit" access="hasRole('ROLE_SUPERVISOR')" />
+        <intercept-url pattern="/admin/edit" access="hasRole('ROLE_SUPERVISOR')" />
+        <intercept-url pattern="/admin/index" access="hasAnyRole('ADMIN', 'SUPERVISOR')"  />
+        
+        <intercept-url pattern="/post/view" access="hasAnyRole('ADMIN', 'SUPERVISOR')"/>
+        <intercept-url pattern="/post/add" access="hasAnyRole('ADMIN', 'SUPERVISOR')"/>
+        <intercept-url pattern="/post/edit" access="hasAnyRole('ADMIN', 'SUPERVISOR')"/>
+        <intercept-url pattern="/post/delete" access="hasRole('ADMIN', 'SUPERVISOR')"/>
+        
+        <intercept-url pattern="/category/view" access="hasAnyRole('ADMIN', 'SUPERVISOR')" />
+        <intercept-url pattern="/category/add" access="hasAnyRole('ADMIN', 'SUPERVISOR')" />
+        <intercept-url pattern="/category/edit" access="hasAnyRole('ADMIN', 'SUPERVISOR')" />
+        <intercept-url pattern="/category/delete" access="hasRole('ADMIN', 'SUPERVISOR')" />
+        
+        <intercept-url pattern="/hashtag/view" access="hasAnyRole('ADMIN', 'SUPERVISOR')" />
+        <intercept-url pattern="/hashtag/add" access="hasAnyRole('ADMIN', 'SUPERVISOR')" />
+        <intercept-url pattern="/hashtag/edit" access="hasAnyRole('ADMIN', 'SUPERVISOR')" />
+        <intercept-url pattern="/hashtag/delete" access="hasRole('SUPERVISOR')" />
+        
+        <intercept-url pattern="/comment/view" access="hasAnyRole('ADMIN', 'SUPERVISOR')" />
+        <intercept-url pattern="/comment/delete" access="hasRole('SUPERVISOR')" />
+        
+        <intercept-url pattern="/customer/view" access="hasAnyRole('ADMIN', 'SUPERVISOR')" />
+        <intercept-url pattern="/customer/add" access="hasAnyRole('ADMIN', 'SUPERVISOR')" />
+        <intercept-url pattern="/customer/edit" access="hasAnyRole('ADMIN', 'SUPERVISOR')" />
+        <intercept-url pattern="/customer/delete" access="hasRole('SUPERVISOR')" />
+ 
+        <access-denied-handler error-page="/admin/403" />
+ 
+        <form-login login-page='/login' login-processing-url="/loginProcess"
+            default-target-url="/admin/index" always-use-default-target="false"
+            authentication-failure-url="/login?error=true" username-parameter="username"
+            password-parameter="password" />
+ 
+ 		<logout logout-url="/logout" logout-success-url="/logoutSuccessful"
+            delete-cookies="JSESSIONID" invalidate-session="true" />
+ 
+    </http>
+ 
+    <authentication-manager>
+        <authentication-provider>
+            <user-service>
+                <user name="minh" password="minh" authorities="ROLE_USER" />
+               	<user name="hailong" password="hailong" authorities="ROLE_USER" />
+               	<user name="long" password="long" authorities="ROLE_ADMIN" />
+               	<user name="buiminh" password="buiminh" authorities="ROLE_SUPERVISOR" />
+            </user-service>
+        </authentication-provider>
+ 
+ 
+ 
+        <!-- authentication from database -->
+        <authentication-provider>
+            <jdbc-user-service data-source-ref="dataSource"
+                users-by-username-query="select name,password from tbl_admin where name=? and password = ?"
+                authorities-by-username-query="Select name, role from tbl_admin where name=? and password = ?" />
+        </authentication-provider>
+ 
+    </authentication-manager>
+ 
+</beans:beans>

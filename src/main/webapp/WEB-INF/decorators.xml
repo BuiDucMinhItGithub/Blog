@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/decorators">
+   
+
+	<!-- user -->
+    <decorator name="user" page="user.jsp">
+       <pattern>/user/*</pattern>
+       <pattern>/customer/index</pattern>
+       <pattern>/customer/detail</pattern>
+       <pattern>/customer/list</pattern>
+    </decorator>
+    
+    
+    <!-- admin -->
+   	<decorator name="admin" page="admin.jsp">
+        <pattern>/admin/*</pattern>
+        <pattern>/category/*</pattern>
+        <pattern>/post/*</pattern>
+         <pattern>/comment/*</pattern>
+        <pattern>/hashtag/*</pattern>
+        <pattern>/posthashtag/*</pattern>
+        <pattern>/customer/*</pattern>
+    </decorator>
+    <!-- login admin -->
+    <decorator name="login" page="login.jsp">
+
+        <pattern>/login</pattern>
+    </decorator>
+
+</decorators>
